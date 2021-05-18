@@ -9,6 +9,11 @@
 #include <tasksConfig.h>
 #include <stdint.h>     // for uint8_t
 
+// This initialization of the struct Coder allocates memory for the variable
+// "coder" and initializes it with values: 0 and false.
+//
+struct Coder coder = {0, false};
+
 void rotaryEncoderTask(void *param)
 {
     uint8_t pin_A, pin_B, oldState, newState, oldCoderIndex, newCoderIndex;
@@ -112,7 +117,7 @@ void rotaryEncoderTask(void *param)
 
         }	// end if (oldState != NewState)
 
-        // Check for an encoder switch pressed to change to another radio
+        // Check for the encoder switch pressed to change to another radio
         // station.
         //
         if (digitalRead(pin_SW) == LOW)
@@ -127,7 +132,9 @@ void rotaryEncoderTask(void *param)
             {
                 if (xSemaphoreTake(sMutex, (TickType_t) 10) == pdTRUE)
                 {
-                    coder.select = true;                                                                       
+                    coder.select = true;     
+
+                    //vTaskDelay(500 / portTICK_PERIOD_MS);                                                                 
                     // When done
                     xSemaphoreGive(sMutex);
 
@@ -143,11 +150,4 @@ void rotaryEncoderTask(void *param)
 
     }   // end for-ever-loop()
     
-}   // rotaryEncoderTask(void *param)
-
-
-// bool selectSwitchPressed()
-// {
-//     return (switchState == LOW);
-// }
-
+}   // end rotaryEncoderTask(void *param)

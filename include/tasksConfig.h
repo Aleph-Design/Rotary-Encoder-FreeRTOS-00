@@ -17,6 +17,11 @@ struct Coder {
     bool    select;     // radio station with this index to play
 };
 
-extern Coder coder;     // Globally defined; set in rotaryEncoderTask.cpp
+// We want to access the variable "coder" in another file. 
+// So, we ADDITIONALLY add a DECLARATION in a header file:
+// The keyword extern basically says: “This is JUST a DECLARATION”.
+// "coder" is initialized in rotaryEncoderTask.cpp
+//
+extern Coder coder; 
 
 #endif

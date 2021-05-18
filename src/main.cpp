@@ -6,6 +6,7 @@
 //
 SemaphoreHandle_t sMutex = NULL;
 
+
 void setup() 
 {
   Serial.begin(115200);
@@ -34,5 +35,8 @@ void loop()
                                 coder.index, coder.select);
       xSemaphoreGive(sMutex);
     }
+
+    vTaskDelay(300 / portTICK_PERIOD_MS);
+
   }
 }
