@@ -12,9 +12,19 @@ void createAllTasks()
     xTaskCreatePinnedToCore(
         rotaryEncoderTask,
         "Rotary Encoder Task",
-        1024,
+        2048,
         NULL,
         1,
         NULL,
         1);
-}
+
+    xTaskCreatePinnedToCore(
+        selectRadioTask,
+        "Select Radio Task",
+        4096,
+        NULL,
+        1,
+        NULL,
+        1);
+     
+}   // end createAllTasks()

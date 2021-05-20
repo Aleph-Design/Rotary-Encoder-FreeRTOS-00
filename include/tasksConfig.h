@@ -7,6 +7,7 @@
 
 #include <arduino.h>   // Equal to: #include <FreeRTOS.h>
 #include <rotaryEncoderTask.h>
+#include <selectRadioTask.h>
 
 // A struct to "transport" variables to the task that is responsible for
 // displaying a radio stations name indicated by "index" and to change to 
@@ -23,5 +24,6 @@ struct Coder {
 // "coder" is initialized in rotaryEncoderTask.cpp
 //
 extern Coder coder; 
+//extern Coder *pCoder;
 
 #endif

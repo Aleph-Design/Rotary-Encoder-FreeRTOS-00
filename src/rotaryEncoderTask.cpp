@@ -13,6 +13,7 @@
 // "coder" and initializes it with values: 0 and false.
 //
 struct Coder coder = {0, false};
+//struct Coder *pCoder;
 
 void rotaryEncoderTask(void *param)
 {
@@ -37,6 +38,8 @@ void rotaryEncoderTask(void *param)
     oldState = (pin_B | (pin_A << 1)); 	// CW: 3, 1, 0, 2, 3
     oldCoderIndex = 0;
     newCoderIndex = 0;
+
+    Serial.printf("\n--- Rotary Encoder Task ---\n");
 
     // For-Ever-Loop
     // =============
@@ -84,18 +87,19 @@ void rotaryEncoderTask(void *param)
                 {
                     // This is the value of newCoderIndex we can use as index
                     // to select a new radio station.
-                    //
                     // Here we can switch to another task to update the display
                     // of a radio stations name. We protect this with a mutex.
                     //
-                    //Serial.printf("2. index new Radio Station: %d\n\n", 
-                     //                                       newCoderIndex); 
+                    //Serial.printf("Rotary newCoderIndex: %d\n", newCoderIndex); 
+
                     if (sMutex != NULL)
                     {
                         if (xSemaphoreTake(sMutex, (TickType_t) 10) == pdTRUE)
                         {
                             coder.index  = newCoderIndex;  
                             coder.select = false;                                                                     
+                            // pCoder->index  = newCoderIndex;
+                            // pCoder->select = false;
                             // When done
                             xSemaphoreGive(sMutex);
 
@@ -106,6 +110,9 @@ void rotaryEncoderTask(void *param)
                         // If the semaphore could not be obained within 10 ticks
                         // just move on.
                     }   // end if sMutex
+
+                    // Serial.printf("Rotary coder.index: %d coder.select: %d\n", 
+                    //                                 coder.index, coder.select); 
 
                     oldCoderIndex = newCoderIndex;
 
@@ -124,18 +131,15 @@ void rotaryEncoderTask(void *param)
         {
             // In here we must switch to another task to update the change
             // to another radio station. We protect this with a mutex
-            //Serial.printf("\nSelect new Radio Station Pressed: %d\n\n", 
-              //                                              newCoderIndex);
-            vTaskDelay(300 / portTICK_PERIOD_MS);
+            //
+            vTaskDelay(500 / portTICK_PERIOD_MS);
 
             if (sMutex != NULL)
             {
                 if (xSemaphoreTake(sMutex, (TickType_t) 10) == pdTRUE)
                 {
-                    coder.select = true;     
-
-                    //vTaskDelay(500 / portTICK_PERIOD_MS);                                                                 
-                    // When done
+                    // pCoder->select = true;
+                    coder.select = true;  
                     xSemaphoreGive(sMutex);
 
                     // taskYIELD() is used to request a context switch 

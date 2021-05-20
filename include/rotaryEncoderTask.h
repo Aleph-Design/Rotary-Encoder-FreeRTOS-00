@@ -1,15 +1,14 @@
 /*
 * Protype and other specific for this task
 */
-
 #ifndef ROTARY_ENCODER_TASK_H
 #define rotaryEncoderTask_h
 
 #define pin_CLK   26
 #define pin_DT    27
-#define pin_SW    14
-#define MAX_INDEX 10
-#define ENC_STEPS  4
+#define pin_SW    14    // Is 34 by default HIGH?
+#define MAX_INDEX 17    // 17 Radio Stations
+#define ENC_STEPS  4    // Number of steps between detents
 
 // Define the semaphore here and give it a value in main.cpp so it
 // can be used in this task.
